@@ -18,21 +18,32 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: FreeIPA.XYZ Blog
+title: FreeIPA.XYZ
 email: info@freeipa.xyz
 description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  FOSS enterprise infrastructure blog
 baseurl: "" # the subpath of your site, e.g. /blog
 url: freeipa.xyz # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: freeipa-xyz
 github_username:  freeipa-xyz
 
+rss: null
+
 # Build settings
-theme: minima
+#theme: minima
+#theme: minima
+remote_theme: jekyll/minima
 plugins:
   - jekyll-feed
+  - jekyll-remote-theme
+#  - jemoji
+minima:
+  date_format: "%Y-%m-%d"
+  skin: auto # or auto if you want it to switch with your system settings.
+  social_links:
+    - { platform: github,  user_url: "https://github.com/freeipa-xyz" }
+    - { platform: telegram, user_url: "https://t.me/freeipa_xyz" }
+    - { platform: linkedin, user_url: "https://www.linkedin.com/in/filimonic" }
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -53,3 +64,17 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+
+highlighter: rouge
+
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
+
+collections_dir: _collections
+collections:
+  articles:
+    output: true
+sass:
+  quiet_deps: true
