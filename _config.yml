@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: FreeIPA.XYZ Blog
+title: FreeIPA.XYZ
 email: info@freeipa.xyz
 description: >- # this means to ignore newlines until "baseurl:"
   Write an awesome description for your new site here. You can edit this
@@ -30,10 +30,15 @@ url: freeipa.xyz # the base hostname & protocol for your site, e.g. http://examp
 github_username:  freeipa-xyz
 
 # Build settings
-theme: minima
+#theme: minima
+# theme: minima
+remote_theme: jekyll/minima
 plugins:
   - jekyll-feed
-
+  - jekyll-remote-theme
+minima:
+  skin: dark # or auto if you want it to switch with your system settings.
+  
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
