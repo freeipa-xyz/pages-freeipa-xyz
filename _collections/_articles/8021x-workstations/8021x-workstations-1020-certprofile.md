@@ -108,5 +108,7 @@ ipa caacl-add hosts__ca802_1xCert --hostcat='all'
 ```
 
 Bind this ACL to our new certificate profile: 
+
 ```shell
 ipa caacl-add-profile hosts__ca802_1xCert --certprofiles=ca802_1xCert
+```
