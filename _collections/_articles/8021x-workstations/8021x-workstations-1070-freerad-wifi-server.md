@@ -28,50 +28,41 @@ server wifi {
   authorize {       # `authorize` section is also named `pre-authenticate`. 
                     #   This is where requests starts processing
 
-    # EAP authentication causes RADIUS to process long chain of 
-    # ` Request - Challenge - Request - Channelnge - Request - Channelnge ... ` pairs
-    # To process some logical rules only at very first request, we use session-state.
-    if (!(&session-state:Tmp-Integer-0)) {
-      update session-state {
-        &Tmp-Integer-0 := 1
+    # Check request for user-name existence. If not, reject request.
+    #   EAP connections may have 2 fields for this: `username` and 
+    #   `anonymous identity` or `phase 1 identity`. If no value is provided on client for
+    #   `anonymous identity`, then same identity as phase 2 identity is used, and this
+    #   behavoir compromises username.
+    #   IPA workstations will use string `anonymous-od-type-a` here.
+    #   I will check if identity starts with `anonymous-od-`. If true, this client should
+    #   be authenticated with this FreeRADIUS. Else, it should be proxied to AD NPS.
+    #   Note: FreeRADIUS checks if phase 1 identity starts with `anonymous`. If not, 
+    #   FreeRADIUS will log warning about identity may be compromised.
+    if (!(&User-Name)) {
+      update request {
+        &Module-Failure-Message += 'Rejected: User-Name not provided.'
       }
-    
-      # This server processes only Wi-Fi authentication, so I check if request 
-      #   has NAS-Port-Type attribute and it's value is Wireless-802.11. 
-      #   If not, I reject RADIUS request.
-      if (!(&NAS-Port-Type && &NAS-Port-Type == Wireless-802.11)) {
-        update request {
-          &Module-Failure-Message += 'Rejected: NAS-Port-Type is not Wireless-802.11.'
-        }
-        reject
+      reject
+    }
+
+    # Check if user-name starts with `anonymous-od-`
+    # For nowm we will reject request.
+    # `i` means case-insensitive
+    if (&User-Name !~ /^anonymous-od-/i) {
+      update request {
+        &Module-Failure-Message += 'Rejected: by identity'
       }
-    
-      # Check request for user-name existence. If not, reject request.
-      #   EAP connections may have 2 fields for this: `username` and 
-      #   `anonymous identity` or `phase 1 identity`. If no value is provided on client for
-      #   `anonymous identity`, then same identity as phase 2 identity is used, and this
-      #   behavoir compromises username.
-      #   IPA workstations will use string `anonymous-od-type-a` here.
-      #   I will check if identity starts with `anonymous-od-`. If true, this client should
-      #   be authenticated with this FreeRADIUS. Else, it should be proxied to AD NPS.
-      #   Note: FreeRADIUS checks if phase 1 identity starts with `anonymous`. If not, 
-      #   FreeRADIUS will log warning about identity may be compromised.
-      if (!(&User-Name)) {
-        update request {
-          &Module-Failure-Message += 'Rejected: User-Name not provided.'
-        }
-        reject
+      reject
+    }
+
+    # This server processes only Wi-Fi authentication, so I check if request 
+    #   has NAS-Port-Type attribute and it's value is Wireless-802.11. 
+    #   If not, I reject RADIUS request.
+    if (!(&NAS-Port-Type && &NAS-Port-Type == Wireless-802.11)) {
+      update request {
+        &Module-Failure-Message += 'Rejected: NAS-Port-Type is not Wireless-802.11.'
       }
-    
-      # Check if user-name starts with `anonymous-od-`
-      # For nowm we will reject request.
-      # `i` means case-insensitive
-      if (&User-Name !~ /^anonymous-od-/i) {
-        update request {
-          &Module-Failure-Message += 'Rejected: by identity'
-        }
-        reject
-      }
+      reject
     }
 
     # If we still here, call eap processing
