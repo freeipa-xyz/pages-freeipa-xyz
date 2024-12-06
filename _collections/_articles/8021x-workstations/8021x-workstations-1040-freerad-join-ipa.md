@@ -10,6 +10,7 @@ permalink: /a/02f2fba2-b05b-42d4-8437-7f17c33e96a1
 
 ## Join FreeRADIUS server to FreeIPA domain
 This is done to automatically issue FreeRADIUS certificates like this
+
 ```shell
 ipa-client-install \
   --hostname "$( hostname --short ).od.freeipa.xyz" \
@@ -22,4 +23,3 @@ ipa-client-install \
   --enable-dns-updates \
   --password=7Qexxxxxxxxxx 
 ```
-
