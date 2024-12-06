@@ -12,7 +12,6 @@ permalink: /a/02f2fba2-b05b-42d4-8437-7f17c33e96a1
 This is done to automatically issue FreeRADIUS certificates like this
 ```shell
 ipa-client-install \
-  --password=7Qexxxxxxxxxx \
   --hostname "$( hostname --short ).od.freeipa.xyz" \
   --domain "od.freeipa.xyz"  \
   --ntp-pool time.freeipa.xyz \
@@ -20,6 +19,7 @@ ipa-client-install \
   --no-sshd \
   --no-sudo \
   --ssh-trust-dns \
-  --enable-dns-updates
+  --enable-dns-updates \
+  --password=7Qexxxxxxxxxx 
 ```
 
