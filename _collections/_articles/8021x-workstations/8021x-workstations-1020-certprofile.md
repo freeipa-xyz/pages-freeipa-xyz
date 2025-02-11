@@ -53,7 +53,7 @@ policyset.set1.key.constraint.params.keyParameters=2048,3072,4096,8192
 
 #### Certificate Extended Key Usages:
 
-Find `policyset.set1.3.constraint.params.keyParameters=` and replace value with  `1.3.6.1.5.5.7.3.2,1.3.6.1.5.5.7.3.14`. which stands for `EAP-over-LAN`.
+Find `policyset.set1.7.default.params.exKeyUsageOIDs=` and replace value with  `1.3.6.1.5.5.7.3.2,1.3.6.1.5.5.7.3.14`. which stands for `ClientAuth, EAP-over-LAN`.
 * `1.3.6.1.5.5.7.3.14` is `EAP over LAN` or `id-kp.14`, which is a way for us to know if this certificate passed to server by client is expected to be used for 802.1x authentication and not just default certificate
 
 #### Certificate signing algorithms
